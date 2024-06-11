@@ -65,7 +65,7 @@ public struct ButtonBarPagerTabStripSettings {
     public var style = Style()
 }
 
-open class ButtonBarPagerTabStripViewController: PagerTabStripViewController, PagerTabStripDataSource, PagerTabStripIsProgressiveDelegate, UICollectionViewDelegate, UICollectionViewDataSource {
+open class ButtonBarPagerTabStripViewController: PagerTabStripViewController, PagerTabStripDataSource, PagerTabStripIsProgressiveDelegate, UICollectionViewDelegateFlowLayout, UICollectionViewDataSource {
 
     public var settings = ButtonBarPagerTabStripSettings()
 
@@ -135,12 +135,8 @@ open class ButtonBarPagerTabStripViewController: PagerTabStripViewController, Pa
         if buttonBarView.superview == nil {
             view.addSubview(buttonBarView)
         }
-        if buttonBarView.delegate == nil {
-            buttonBarView.delegate = self
-        }
-        if buttonBarView.dataSource == nil {
-            buttonBarView.dataSource = self
-        }
+        buttonBarView.delegate = self
+        buttonBarView.dataSource = self
         buttonBarView.scrollsToTop = false
         let flowLayout = buttonBarView.collectionViewLayout as! UICollectionViewFlowLayout // swiftlint:disable:this force_cast
         flowLayout.scrollDirection = .horizontal
@@ -275,7 +271,7 @@ open class ButtonBarPagerTabStripViewController: PagerTabStripViewController, Pa
 
     // MARK: - UICollectionViewDelegateFlowLayut
 
-    @objc open func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: IndexPath) -> CGSize {
+    @objc open func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         guard let cellWidthValue = cachedCellWidths?[indexPath.row] else {
             fatalError("cachedCellWidths for \(indexPath.row) must not be nil")
         }
